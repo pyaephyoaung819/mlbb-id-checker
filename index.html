@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MLBB Player Info Checker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body { font-family: sans-serif; padding: 20px; text-align: center; }
+    input { padding: 10px; font-size: 16px; width: 80%; }
+    button { padding: 10px 20px; font-size: 16px; margin-top: 10px; }
+    #result { margin-top: 20px; font-size: 18px; color: green; }
+    #error { margin-top: 20px; font-size: 16px; color: red; }
+  </style>
+</head>
+<body>
+  <h2>MLBB Player Info Checker</h2>
+  <input type="text" id="mlbbId" placeholder="Enter MLBB ID" />
+  <br />
+  <button onclick="checkMLBB()">Check Now</button>
+  <div id="result"></div>
+  <div id="error"></div>
+
+  <script>
+    async function checkMLBB() {
+      const id = document.getElementById('mlbbId').value;
+      document.getElementById('result').innerText = '';
+      document.getElementById('error').innerText = '';
+      try {
+        const res = await fetch(/api/check?id=${id});
+        const data = await res.json();
+        if (data.success) {
+          document.getElementById('result').innerText = Name: ${data.name}\nServer: ${data.server};
+        } else {
+          document.getElementById('error').innerText = data.message || "Player not found.";
+        }
+      } catch (e) {
+        document.getElementById('error').innerText = "Something went wrong.";
+      }
+    }
+  </script>
+</body>
+</html>
